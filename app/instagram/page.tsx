@@ -120,6 +120,7 @@ export default function InstagramPage() {
 
     try {
       const res = await axios.post('https://cobalt-api-1sa1.onrender.com/', { url });
+      console.log('COBALT RESPONSE:', res.data);
     const data = res.data;
 
 const downloadUrl =
