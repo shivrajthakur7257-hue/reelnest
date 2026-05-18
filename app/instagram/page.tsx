@@ -154,7 +154,10 @@ setResult({
       ));
     } catch (err: any) {
       fetchedRef.current = '';
-      const msg = err.response?.data?.error || 'Failed to fetch. Make sure the post is public.';
+const msg =
+  err.response?.data?.error ||
+  err.message ||
+  'Failed to fetch. Make sure the post is public.';
       setError(msg);
       toast.error(msg);
     } finally {
