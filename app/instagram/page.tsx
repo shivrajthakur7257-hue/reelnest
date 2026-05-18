@@ -135,7 +135,6 @@ export default function InstagramPage() {
 );
       console.log('COBALT RESPONSE:', res.data);
 
-
 const data = res.data;
 
 console.log('COBALT RESPONSE:', data);
