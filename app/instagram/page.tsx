@@ -237,19 +237,12 @@ export default function InstagramPage() {
       console.log('FULL ERROR:', err);
       console.log('ERROR RESPONSE:', err.response?.data);
 
-const rawMsg =
-  err.response?.data?.text ||
-  err.response?.data?.error ||
-  err.response?.data?.message ||
-  err.message ||
-  'Failed to fetch. Make sure the video is public.';
-
-const msg =
-  typeof rawMsg === 'string'
-    ? rawMsg
-    : rawMsg?.code
-    ? rawMsg.code
-    : JSON.stringify(rawMsg);
+      const msg =
+        err.response?.data?.text ||
+        err.response?.data?.error ||
+        err.response?.data?.message ||
+        err.message ||
+        'Failed to fetch. Make sure the post is public.';
 
       setError(msg);
       toast.error(msg);
@@ -433,7 +426,7 @@ const msg =
               exit={{ opacity: 0 }}
             >
               <AlertCircle className="w-4 h-4 text-red-400 shrink-0 mt-0.5" />
-              <p className="text-sm text-red-300">{error}</p>
+              <p className="text-sm text-red-300">{String(error)}</p>
             </motion.div>
           )}
         </AnimatePresence>

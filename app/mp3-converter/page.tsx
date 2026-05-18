@@ -393,7 +393,7 @@ const msg =
               exit={{ opacity: 0 }}
             >
               <AlertCircle className="w-4 h-4 text-red-400 shrink-0 mt-0.5" />
-              <p className="text-sm text-red-300">{error}</p>
+             <p className="text-sm text-red-300">{String(error)}</p>
             </motion.div>
           )}
         </AnimatePresence>
