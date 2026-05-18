@@ -99,9 +99,18 @@ export default function YouTubePage() {
       const res = await axios.post('https://cobalt-api-1sa1.onrender.com/api/fetch', { url });
       const data = res.data;
 
+const downloadUrl =
+  data?.url ||
+  data?.picker?.[0]?.url ||
+  data?.picker?.[0]?.audio;
+
+if (!downloadUrl) {
+  throw new Error('Could not retrieve download link');
+}
+
 setResult({
-  thumbnail: data?.picker?.[0]?.thumb || '',
-  title: data?.picker?.[0]?.filename || 'Instagram Media',
+  thumbnail: data?.picker?.[0]?.thumb || data?.thumbnail || '',
+  title: data?.filename || data?.picker?.[0]?.filename || 'Instagram Media',
   author: 'ReelNest',
   isVideo: true,
   downloads: [
@@ -109,7 +118,7 @@ setResult({
       quality: 'HD',
       format: 'mp4',
       size: 'Fast Download',
-      url: data.url,
+      url: downloadUrl,
       direct: true
     }
   ]
