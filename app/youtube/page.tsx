@@ -100,25 +100,34 @@ export default function YouTubePage() {
       console.log('COBALT RESPONSE:', res.data);
       const data = res.data;
 
-const downloadUrl =
-  data?.url ||
-  data?.picker?.[0]?.url ||
-  data?.picker?.[0]?.audio;
+const data = res.data;
+
+console.log('COBALT RESPONSE:', data);
+
+let downloadUrl = '';
+
+if (data.url) {
+  downloadUrl = data.url;
+}
+
+if (!downloadUrl && data.picker?.length > 0) {
+  downloadUrl = data.picker[0].url;
+}
 
 if (!downloadUrl) {
   throw new Error('Could not retrieve download link');
 }
 
 setResult({
-  thumbnail: data?.picker?.[0]?.thumb || data?.thumbnail || '',
-  title: data?.filename || data?.picker?.[0]?.filename || 'Instagram Media',
+  thumbnail: '',
+  title: data.filename || 'Instagram Media',
   author: 'ReelNest',
   isVideo: true,
   downloads: [
     {
       quality: 'HD',
       format: 'mp4',
-      size: 'Fast Download',
+      size: 'Direct Download',
       url: downloadUrl,
       direct: true
     }
