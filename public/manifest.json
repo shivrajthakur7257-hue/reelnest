@@ -1,0 +1,25 @@
+{
+  "name": "ReelNest - Video & MP3 Downloader",
+  "short_name": "ReelNest",
+  "description": "Download Instagram Reels, YouTube Videos, and convert to MP3 in seconds.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#050505",
+  "theme_color": "#dc2626",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["utilities", "multimedia"]
+}
