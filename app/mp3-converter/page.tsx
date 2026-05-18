@@ -93,7 +93,6 @@ export default function MP3ConverterPage() {
     try {
       const res = await axios.post('/api/convert-mp3', { url, bitrate: br });
       console.log('COBALT RESPONSE:', res.data);
-    const data = res.data;
 
 const data = res.data;
 
