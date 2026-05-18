@@ -237,12 +237,19 @@ export default function InstagramPage() {
       console.log('FULL ERROR:', err);
       console.log('ERROR RESPONSE:', err.response?.data);
 
-      const msg =
-        err.response?.data?.text ||
-        err.response?.data?.error ||
-        err.response?.data?.message ||
-        err.message ||
-        'Failed to fetch. Make sure the post is public.';
+const rawMsg =
+  err.response?.data?.text ||
+  err.response?.data?.error ||
+  err.response?.data?.message ||
+  err.message ||
+  'Failed to fetch. Make sure the video is public.';
+
+const msg =
+  typeof rawMsg === 'string'
+    ? rawMsg
+    : rawMsg?.code
+    ? rawMsg.code
+    : JSON.stringify(rawMsg);
 
       setError(msg);
       toast.error(msg);
