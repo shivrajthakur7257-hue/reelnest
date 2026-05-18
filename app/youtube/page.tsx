@@ -131,7 +131,15 @@ setResult({
       ));
     } catch (err: any) {
       fetchedRef.current = '';
-      const msg = err.response?.data?.error || 'Failed to process. Check the URL and try again.';
+console.log('FULL ERROR:', err);
+console.log('ERROR RESPONSE:', err.response?.data);
+
+const msg =
+  err.response?.data?.text ||
+  err.response?.data?.error ||
+  err.response?.data?.message ||
+  err.message ||
+  'Failed to fetch. Make sure the post is public.';
       setError(msg);
       toast.error(msg);
     } finally {
