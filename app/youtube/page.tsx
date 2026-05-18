@@ -96,8 +96,18 @@ export default function YouTubePage() {
     setResult(null);
 
     try {
-      const res = await axios.post('https://cobalt-api-1sa1.onrender.com/api/fetch', { url });
-      console.log('COBALT RESPONSE:', res.data);
+     const res = await axios.post(
+  'https://cobalt-api-1sa1.onrender.com/',
+  {
+    url: url
+  },
+  {
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json'
+    }
+  }
+);
 
 const data = res.data;
 
