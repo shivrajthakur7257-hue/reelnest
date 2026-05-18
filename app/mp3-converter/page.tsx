@@ -92,11 +92,20 @@ export default function MP3ConverterPage() {
 
     try {
       const res = await axios.post('/api/convert-mp3', { url, bitrate: br });
-     const data = res.data;
+    const data = res.data;
+
+const downloadUrl =
+  data?.url ||
+  data?.picker?.[0]?.url ||
+  data?.picker?.[0]?.audio;
+
+if (!downloadUrl) {
+  throw new Error('Could not retrieve download link');
+}
 
 setResult({
-  thumbnail: data?.picker?.[0]?.thumb || '',
-  title: data?.picker?.[0]?.filename || 'Instagram Media',
+  thumbnail: data?.picker?.[0]?.thumb || data?.thumbnail || '',
+  title: data?.filename || data?.picker?.[0]?.filename || 'Instagram Media',
   author: 'ReelNest',
   isVideo: true,
   downloads: [
@@ -104,7 +113,7 @@ setResult({
       quality: 'HD',
       format: 'mp4',
       size: 'Fast Download',
-      url: data.url,
+      url: downloadUrl,
       direct: true
     }
   ]
