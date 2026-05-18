@@ -119,9 +119,20 @@ export default function InstagramPage() {
     setResult(null);
 
     try {
-      const res = await axios.post('https://cobalt-api-1sa1.onrender.com/api/json', {
-  url: url
-});
+     const res = await axios.post(
+  'https://cobalt-api-1sa1.onrender.com/',
+  {
+    url: url,
+    downloadMode: 'auto',
+    filenameStyle: 'classic'
+  },
+  {
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json'
+    }
+  }
+);
       console.log('COBALT RESPONSE:', res.data);
     const data = res.data;
 
