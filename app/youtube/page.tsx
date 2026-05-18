@@ -46,10 +46,20 @@ async function triggerDownload(mediaUrl: string, filename: string) {
   document.body.removeChild(a);
 }
 
+function getYouTubeThumbnail(url: string) {
+  const match = url.match(
+    /(?:youtube\.com\/(?:watch\?v=|shorts\/)|youtu\.be\/)([a-zA-Z0-9_-]{11})/
+  );
+
+  if (!match) return '';
+
+  return `https://img.youtube.com/vi/${match[1]}/maxresdefault.jpg`;
+}
+
 function BigDownloadButton({
   item,
   label,
-  isMain,
+  isMain
 }: {
   item: DownloadItem;
   label: string;
@@ -61,9 +71,13 @@ function BigDownloadButton({
     if (state !== 'idle') return;
 
     setState('loading');
-    await triggerDownload(item.url, `reelnest-youtube-${Date.now()}.${item.format}`);
-    setState('done');
 
+    await triggerDownload(
+      item.url,
+      `reelnest-youtube-${Date.now()}.${item.format}`
+    );
+
+    setState('done');
     toast.success('Download started!');
     setTimeout(() => setState('idle'), 4000);
   };
@@ -94,7 +108,7 @@ function BigDownloadButton({
         {state === 'loading' ? (
           <Loader2 className="w-5 h-5 animate-spin" />
         ) : state === 'done' ? (
-          <CheckCircle2 className="w-5 h-5" />
+          <CircleCheck2 className="w-5 h-5" />
         ) : (
           <ArrowDown className="w-5 h-5" />
         )}
@@ -111,7 +125,8 @@ function BigDownloadButton({
 
 export default function YouTubePage() {
   const [inputUrl, setInputUrl] = useState('');
-  const [quality, setQuality] = useState<typeof QUALITY_OPTIONS[number]>('720p');
+  const [quality, setQuality] =
+    useState<typeof QUALITY_OPTIONS[number]>('720p');
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState<DownloadResult | null>(null);
   const [error, setError] = useState('');
@@ -119,9 +134,10 @@ export default function YouTubePage() {
 
   const fetchVideo = useCallback(async (url: string, q: string) => {
     const key = url + q;
-    if (fetchedRef.current === key) return;
-    fetchedRef.current = key;
 
+    if (fetchedRef.current === key) return;
+
+    fetchedRef.current = key;
     setLoading(true);
     setError('');
     setResult(null);
@@ -132,50 +148,60 @@ export default function YouTubePage() {
         {
           url,
           downloadMode: 'auto',
-          filenameStyle: 'classic',
+          videoQuality: q.replace('p', ''),
+          youtubeVideoCodec: 'h264',
+          filenameStyle: 'classic'
         },
         {
           headers: {
             Accept: 'application/json',
-            'Content-Type': 'application/json',
-          },
+            'Content-Type': 'application/json'
+          }
         }
       );
 
       const data = res.data;
+
       console.log('COBALT RESPONSE:', data);
 
       let downloadUrl = '';
-      let thumbnail = '';
+      let thumbnail = getYouTubeThumbnail(url);
       let title = 'YouTube Video';
 
       if (data?.url) {
         downloadUrl = data.url;
       }
 
+      if (!downloadUrl && data?.tunnel) {
+        downloadUrl = data.tunnel;
+      }
+
       if (!downloadUrl && data?.picker?.length > 0) {
         downloadUrl =
           data.picker[0]?.url ||
           data.picker[0]?.items?.[0]?.url ||
+          data.picker[0]?.video ||
           '';
-
-        thumbnail =
-          data.picker[0]?.thumb ||
-          data.picker[0]?.thumbnail ||
-          '';
-
-        title =
-          data.picker[0]?.filename ||
-          data?.filename ||
-          'YouTube Video';
       }
 
-      if (!thumbnail) {
-        thumbnail = data?.thumbnail || data?.thumb || '';
+      if (data?.thumbnail) {
+        thumbnail = data.thumbnail;
+      }
+
+      if (data?.thumb) {
+        thumbnail = data.thumb;
+      }
+
+      if (data?.picker?.[0]?.thumb) {
+        thumbnail = data.picker[0].thumb;
       }
 
       if (data?.filename) {
         title = data.filename;
+      }
+
+      if (data?.picker?.[0]?.filename) {
+        title = data.picker[0].filename;
       }
 
       console.log('DOWNLOAD URL:', downloadUrl);
@@ -195,12 +221,14 @@ export default function YouTubePage() {
             format: 'mp4',
             size: 'Direct Download',
             url: downloadUrl,
-            direct: true,
-          },
-        ],
+            direct: true
+          }
+        ]
       });
 
-      const history = JSON.parse(localStorage.getItem('reelnest_history') || '[]');
+      const history = JSON.parse(
+        localStorage.getItem('reelnest_history') || '[]'
+      );
 
       localStorage.setItem(
         'reelnest_history',
@@ -212,9 +240,9 @@ export default function YouTubePage() {
               platform: 'youtube',
               type: 'mp4',
               quality: q,
-              timestamp: Date.now(),
+              timestamp: Date.now()
             },
-            ...history,
+            ...history
           ].slice(0, 20)
         )
       );
@@ -240,6 +268,7 @@ export default function YouTubePage() {
 
   useEffect(() => {
     const p = new URLSearchParams(window.location.search).get('url');
+
     if (p) {
       setInputUrl(p);
       fetchVideo(p, quality);
@@ -287,12 +316,12 @@ export default function YouTubePage() {
           </h1>
 
           <p className="text-gray-400 text-sm">
-            Paste link → one click → MP4 saved to device
+            Paste YouTube link → select quality → direct download
           </p>
         </motion.div>
 
         <motion.div
-          className="flex justify-center gap-2 mb-5"
+          className="flex justify-center flex-wrap gap-2 mb-5"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.1 }}
@@ -304,6 +333,7 @@ export default function YouTubePage() {
                 setQuality(q);
                 fetchedRef.current = '';
                 setResult(null);
+                setError('');
               }}
               className={`px-4 py-2 rounded-xl text-sm font-semibold transition-all duration-200 ${
                 quality === q
@@ -389,7 +419,7 @@ export default function YouTubePage() {
             ) : (
               <>
                 <Download className="w-4 h-4" />
-                Download
+                Fetch Download Link
               </>
             )}
           </motion.button>
@@ -442,8 +472,8 @@ export default function YouTubePage() {
                     alt={result.title || 'Preview'}
                     className="w-full h-full object-cover"
                     onError={(e) => {
-                      (e.target as HTMLImageElement).parentElement!.style.display =
-                        'none';
+                      (e.target as HTMLImageElement).src =
+                        getYouTubeThumbnail(inputUrl);
                     }}
                   />
 
@@ -455,11 +485,9 @@ export default function YouTubePage() {
                     </div>
                   </div>
 
-                  {result.duration && (
-                    <span className="absolute bottom-3 right-3 px-2 py-1 bg-black/80 text-white text-xs rounded font-medium">
-                      {result.duration}
-                    </span>
-                  )}
+                  <span className="absolute top-3 right-3 px-3 py-1 bg-red-600 text-white text-xs rounded-full font-bold">
+                    {quality}
+                  </span>
 
                   {(result.title || result.author) && (
                     <div className="absolute bottom-0 left-0 right-0 p-4">
@@ -468,6 +496,7 @@ export default function YouTubePage() {
                           {result.title}
                         </p>
                       )}
+
                       {result.author && (
                         <p className="text-xs text-gray-300 mt-0.5">
                           {result.author}
@@ -506,10 +535,14 @@ export default function YouTubePage() {
               {[
                 'YouTube video open karo aur URL copy karo',
                 'Upar input mein paste karo',
-                'Quality select karo',
-                '"Download" button click karo — file save hogi',
+                'Resolution select karo',
+                '"Fetch Download Link" click karo',
+                'Preview ke niche "Download Video" press karo'
               ].map((step, i) => (
-                <li key={i} className="flex items-start gap-3 text-sm text-gray-400">
+                <li
+                  key={i}
+                  className="flex items-start gap-3 text-sm text-gray-400"
+                >
                   <span className="w-5 h-5 rounded-full bg-[#FF0000]/20 text-[#FF0000] text-[10px] font-bold flex items-center justify-center shrink-0 mt-0.5">
                     {i + 1}
                   </span>
