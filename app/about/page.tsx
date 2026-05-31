@@ -1,76 +1,34 @@
-import { Download, Shield, Zap, Users } from 'lucide-react';
-
-export const metadata = {
-  title: 'About ReelNest - Free Video & MP3 Downloader',
-  description: 'Learn about ReelNest, the free online tool for downloading Instagram Reels, YouTube videos, and converting to MP3.',
-};
+import Header from '@/components/Header';
+import Footer from '@/components/Footer';
 
 export default function AboutPage() {
   return (
-    <div className="min-h-screen pt-24 pb-32 px-4">
-      <div className="max-w-4xl mx-auto">
-        <div className="text-center mb-16">
-          <h1 className="text-3xl sm:text-5xl font-bold text-white mb-4">
-            About <span className="neon-text">ReelNest</span>
-          </h1>
-          <p className="text-gray-400 text-lg max-w-2xl mx-auto">
-            Your go-to platform for downloading and converting online media content, fast and free.
+    <>
+      <Header />
+      <main className="min-h-screen bg-[#050509] px-4 py-16 text-white">
+        <section className="mx-auto max-w-5xl">
+          <h1 className="text-4xl font-black md:text-6xl">About Reelnest Tools</h1>
+          <p className="mt-6 text-lg leading-8 text-white/60">
+            Reelnest Tools is a free online tools platform built for creators, marketers,
+            students and developers. Our goal is to provide simple, fast and useful browser-based
+            tools without unnecessary login or complexity.
           </p>
-        </div>
 
-        <div className="space-y-12">
-          <section className="glass rounded-2xl p-8">
-            <h2 className="text-xl font-semibold text-white mb-4">Our Mission</h2>
-            <p className="text-gray-400 leading-relaxed">
-              ReelNest was built with a simple goal: make downloading online content easy, fast, and accessible to everyone. We believe you should be able to save your favorite reels, videos, and music without complicated software or sketchy websites.
-            </p>
-          </section>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div className="mt-12 grid gap-6 md:grid-cols-3">
             {[
-              { icon: Zap, title: 'Fast', desc: 'Downloads processed in seconds with optimized servers.' },
-              { icon: Shield, title: 'Secure', desc: 'No data stored. Your privacy is our priority.' },
-              { icon: Download, title: 'Free', desc: 'No hidden costs, no premium tiers. Completely free.' },
-              { icon: Users, title: 'User-First', desc: 'Designed for simplicity and ease of use.' },
-            ].map((item) => (
-              <div key={item.title} className="glass rounded-2xl p-6">
-                <item.icon className="w-8 h-8 text-red-400 mb-3" />
-                <h3 className="text-lg font-semibold text-white mb-2">{item.title}</h3>
-                <p className="text-sm text-gray-400">{item.desc}</p>
+              ['Free Tools', 'Use useful tools without paying anything.'],
+              ['Fast Results', 'All tools work instantly inside your browser.'],
+              ['Creator Friendly', 'Made for social media, SEO, text and developer tasks.'],
+            ].map(([title, text]) => (
+              <div key={title} className="rounded-3xl border border-white/10 bg-white/[0.06] p-6">
+                <h3 className="text-xl font-bold">{title}</h3>
+                <p className="mt-3 text-white/55">{text}</p>
               </div>
             ))}
           </div>
-
-          <section className="glass rounded-2xl p-8">
-            <h2 className="text-xl font-semibold text-white mb-4">How It Works</h2>
-            <ol className="space-y-4 text-gray-400">
-              <li className="flex gap-3">
-                <span className="w-8 h-8 rounded-lg bg-gradient-to-br from-red-500/20 to-purple-600/20 flex items-center justify-center text-sm font-bold text-white shrink-0">1</span>
-                <span>Copy the URL of the Instagram Reel, Story, or YouTube video you want to download.</span>
-              </li>
-              <li className="flex gap-3">
-                <span className="w-8 h-8 rounded-lg bg-gradient-to-br from-red-500/20 to-purple-600/20 flex items-center justify-center text-sm font-bold text-white shrink-0">2</span>
-                <span>Paste the URL into the input field on the relevant page.</span>
-              </li>
-              <li className="flex gap-3">
-                <span className="w-8 h-8 rounded-lg bg-gradient-to-br from-red-500/20 to-purple-600/20 flex items-center justify-center text-sm font-bold text-white shrink-0">3</span>
-                <span>Select your preferred quality and click Download.</span>
-              </li>
-              <li className="flex gap-3">
-                <span className="w-8 h-8 rounded-lg bg-gradient-to-br from-red-500/20 to-purple-600/20 flex items-center justify-center text-sm font-bold text-white shrink-0">4</span>
-                <span>Your file will be ready in seconds. Save it to your device.</span>
-              </li>
-            </ol>
-          </section>
-
-          <section className="glass rounded-2xl p-8">
-            <h2 className="text-xl font-semibold text-white mb-4">Disclaimer</h2>
-            <p className="text-sm text-gray-400 leading-relaxed">
-              ReelNest is intended for personal use only. We do not host, store, or distribute any copyrighted content. Users are responsible for ensuring they have the right to download any content. Please respect the intellectual property rights of content creators and comply with the terms of service of the platforms from which you download.
-            </p>
-          </section>
-        </div>
-      </div>
-    </div>
+        </section>
+      </main>
+      <Footer />
+    </>
   );
 }
