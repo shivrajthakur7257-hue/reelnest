@@ -9,3 +9,4 @@
 {"timestamp":"00:00:14.228","source":"Server","level":"LOG","message":"  \t- jsx was set to react-jsx (next.js uses the React automatic runtime)"}
 {"timestamp":"00:00:14.230","source":"Server","level":"LOG","message":""}
 {"timestamp":"00:00:15.140","source":"Server","level":"LOG","message":""}
+{"timestamp":"00:00:18.288","source":"Server","level":"LOG","message":"○ Compiling / ..."}
